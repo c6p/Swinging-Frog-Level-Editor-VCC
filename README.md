@@ -1,18 +1,17 @@
-# Koji React Scaffold
+# GRID LEVEL EDITOR VCC
 
-Welcome to your new Koji React Project.
+This is a simple VCC React app made to help you more easily generate and visualize levels for your games.
+
+It's made for simple grid-based levels that take an integer value for each cell.
+
+It's also possible to specify a *maxIndex* for each grid.
 
 -------
 # Where to go
-1. Your Frontend code is located at /frontend/pages and there is an example page at [HomePage](#~/frontend/pages/HomePage/index.js)
-2. Your Backend code is located at /backend/routes and there is an example route at [SampleRoute](#~/backend/routes/SampleRoute/index.js)
-3. 3 Visual Customization Controls (VCCs) have been added to the template. These can be quickly modified to your applicaiton
-    - [Colors](#~/.koji/customization/colors.json!visual) - Change the text color, background color, & link text color.
-    - [Images](#~/.koji/customization/images.json!visual) - Change the spinning icon.
-    - [Strings](#~/.koji/customization/strings.json!visual) - Change the page content text & link text.
+- Your main React code is located at [Custom Control](#~/frontend/CustomControl.js)
+- You can modify [Colors](#~/.koji/customization/colors.json!visual)
+- [Settings](#~/.koji/customization/settings.json!visual)
 
 ## Any Questions?
 
 Join our [Discord Server](https://discord.gg/eQuMJF6) for Koji for any software questions or bugs.   
-Any ideas/issues/fixes/pull requests can get sent to either the [Github Repositotry](https://github.com/jonesnxt/koji-react-scaffold)
-or by message to [the template creator](https://gokoji.com/profile/jones)

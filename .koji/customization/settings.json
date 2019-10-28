@@ -1,0 +1,20 @@
+{
+  "settings": {
+    "googleFont": "Staatliches"
+  },
+  "@@editor": [
+    {
+      "key": "settings",
+      "name": "Settings",
+      "icon": "⚙️",
+      "source": "settings.json",
+      "fields": [
+        {
+          "key": "googleFont",
+          "name": "Google Font",
+          "type": "text"
+        }
+      ]
+    }
+  ]
+}
