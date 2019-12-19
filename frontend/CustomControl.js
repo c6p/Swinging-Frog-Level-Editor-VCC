@@ -73,8 +73,11 @@ class App extends React.PureComponent {
             theme: this.customVcc.theme,
             maxIndex: 4,
             setAllIndex: 0,
-            icons: [],
-            fillSelected: 1
+            icons: [Koji.config.images.emptySpace,
+            Koji.config.images.wall,
+            Koji.config.images.food1,
+            Koji.config.images.food2,
+            Koji.config.images.food3]
 
         };
 
@@ -92,8 +95,6 @@ class App extends React.PureComponent {
                 theme
             });
         });
-
-        this.handleFillChange = this.handleFillChange.bind(this);
     }
 
     componentDidMount() {
@@ -104,17 +105,6 @@ class App extends React.PureComponent {
         document.body.style.fontFamily = Koji.config.settings.googleFont;
 
         document.addEventListener('contextmenu', event => event.preventDefault());
-
-        this.setState({
-            icons:
-                [
-                    Koji.config.images.emptySpace,
-                    Koji.config.images.wall,
-                    Koji.config.images.food1,
-                    Koji.config.images.food2,
-                    Koji.config.images.food3
-                ]
-        })
 
     }
 
@@ -132,21 +122,6 @@ class App extends React.PureComponent {
         this.customVcc.save();
 
         console.log(row, item);
-    }
-
-    setAll() {
-        const newValue = Array(21).fill(Array(21).fill(this.state.fillSelected));
-        newValue[9][0] = 0;
-        newValue[9][20] = 0;
-        newValue[11][10] = 0;
-
-        this.setState({
-            value: newValue
-        });
-    }
-
-    handleFillChange(event) {
-        this.setState({ fillSelected: event.target.value });
     }
 
     render() {
