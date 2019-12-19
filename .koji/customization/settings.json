@@ -1,6 +1,6 @@
 {
   "settings": {
-    "googleFont": "Staatliches"
+    "googleFont": "Russo One"
   },
   "@@editor": [
     {
@@ -12,7 +12,8 @@
         {
           "key": "googleFont",
           "name": "Google Font",
-          "type": "text"
+          "type": "text",
+          "description": "Name of the google font"
         }
       ]
     }

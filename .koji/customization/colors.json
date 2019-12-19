@@ -1,6 +1,6 @@
 {
   "colors": {
-    "background": "#e2e8f8",
+    "background": "#001F3D",
     "gridItemColors": [
       "#d9f1f2",
       "#9fdab1",
@@ -10,7 +10,9 @@
     ],
     "inputLabel": "#405691",
     "inputText": "#405691",
-    "inputBackground": "#BBC6E6"
+    "inputBackground": "#BBC6E6",
+    "gridItemBackground": "#405691",
+    "text": "#c2daf4"
   },
   "@@editor": [
     {
@@ -25,24 +27,14 @@
           "type": "color"
         },
         {
-          "key": "inputLabel",
-          "name": "Input Label",
+          "key": "text",
+          "name": "Text Color",
           "type": "color"
         },
         {
-          "key": "inputBackground",
-          "name": "Input Background",
+          "key": "gridItemBackground",
+          "name": "Grid Item Background",
           "type": "color"
-        },
-        {
-          "key": "inputText",
-          "name": "Input Text",
-          "type": "color"
-        },
-        {
-          "key": "gridItemColors",
-          "name": "Grid Item Colors",
-          "type": "color[]"
         }
       ]
     }

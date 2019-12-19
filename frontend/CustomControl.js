@@ -6,7 +6,7 @@ import Koji from "@withkoji/vcc";
 const Wrapper = styled.div`
     padding: 0;
     margin: 0;
-    width: 100vw;
+    width: auto;
     height: 100%;
     padding-top: 5vmin;
     display: flex;
@@ -15,30 +15,28 @@ const Wrapper = styled.div`
 `;
 
 const Grid = styled.div`
-    border: 1px solid ${({ theme }) => theme.colors['border.default'] || 'black'};
-    width: 100vw;
+    
+    width: auto;
     display: flex;
     flex-direction: column;
 
     user-select: none;
     text-align: center;
+    
+    
 `;
 
 const GridRow = styled.div`
     width: 100%;
     display: flex;
+    
 `;
 
 const GridItem = styled.div`
     cursor: pointer;
     
-    width: 10%;
+    width: 10%
     height: auto;
-
-    border: 0.1vmin solid black;
-  
-    padding: 1vmin;
-
    
 
     &:hover{
@@ -46,76 +44,20 @@ const GridItem = styled.div`
     }
 `;
 
-const InputWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: no-wrap;
-
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 2vmin;
-
-
-    
+const Icon = styled.img`
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  backgroundColor: ${Koji.config.colors.gridItemBackground};
 `;
 
-const Input = styled.input`
-    border: 0;
-    opacity: 0.8;
-
-    border-radius: 1vmin;
-
-    font-family: inherit;
-
-    padding: 1vmin;
-
-    transition: all 0.1s ease-out;
-
-    width: auto;
-
-    color: ${Koji.config.colors.inputLabel};
-    background-color: ${Koji.config.colors.inputBackground};
-
-    &:hover{
-        opacity: 1;
-    }
-`;
-
-const InputLabel = styled.div`
-    margin-right: 1vmin;
-    color: ${Koji.config.colors.inputLabel};
-    
-`;
-
-const InputButton = styled.button`
-    border: 0;
-    color: ${Koji.config.colors.inputLabel};
-    background-color: ${Koji.config.colors.inputBackground};
-
-    outline: none;
-
-    font-family: inherit;
-    border-radius: 1vmin;
-    margin-right: 2vmin;
-    font-size: 3vmin;
-
-    padding: 1vmin;
-
-    opacity: 0.8;
-
-      &:hover{
-        opacity: 1;
-    }
-`;
-
-const WarningLabel = styled.div`
-    font-size: 3vmin;
-    color: ${Koji.config.colors.inputLabel};
-
-    margin-left: 1vmin;
+const Label = styled.div`
+  font-size: 14px;
+  color: ${Koji.config.colors.text};
+  margin-left: 2vmin;
+  margin-bottom: 1vmin;
 
 `;
-
 
 let maxValue = 0;
 class App extends React.PureComponent {
@@ -124,18 +66,17 @@ class App extends React.PureComponent {
 
         this.customVcc = new CustomVcc();
 
-        const initialGrid = Array(11).fill(Array(11).fill(0));
+        const initialGrid = Array(21).fill(Array(21).fill(0));
 
         this.state = {
             value: initialGrid,
             theme: this.customVcc.theme,
-            maxIndex: 2,
-            setAllIndex: 0
+            maxIndex: 4,
+            setAllIndex: 0,
+            icons: [],
+            fillSelected: 1
 
         };
-
-
-        console.log(this.state.value)
 
         this.customVcc.onUpdate((newProps) => {
             if (newProps.value && newProps.value !== '') {
@@ -152,41 +93,28 @@ class App extends React.PureComponent {
             });
         });
 
-
-
-        this.assignColor = this.assignColor.bind(this);
-        this.initMaxIndex = this.initMaxIndex.bind(this);
-    }
-
-    initMaxIndex() {
-        maxValue = 0;
-        for (let i = 0; i < this.state.value.length; i++) {
-            for (let j = 0; j < this.state.value[i].length; j++) {
-                if (this.state.value[i][j] > maxValue) {
-
-                    maxValue = this.state.value[i][j];
-                }
-            }
-        }
-
-        this.setState({ maxIndex: maxValue }, () => {
-
-            if (this.state.maxIndex < 1) {
-                this.setState({ maxIndex: 1 });
-            }
-        });
-
+        this.handleFillChange = this.handleFillChange.bind(this);
     }
 
     componentDidMount() {
-        this.customVcc.register('500px', '550px');
+        this.customVcc.register('50%', '100vh');
 
-        setTimeout(this.initMaxIndex, 500);
 
         WebFont.load({ google: { families: [Koji.config.settings.googleFont] } });
         document.body.style.fontFamily = Koji.config.settings.googleFont;
 
         document.addEventListener('contextmenu', event => event.preventDefault());
+
+        this.setState({
+            icons:
+                [
+                    Koji.config.images.emptySpace,
+                    Koji.config.images.wall,
+                    Koji.config.images.food1,
+                    Koji.config.images.food2,
+                    Koji.config.images.food3
+                ]
+        })
 
     }
 
@@ -202,42 +130,31 @@ class App extends React.PureComponent {
         newValue[row] = newRow;
         this.customVcc.change(newValue);
         this.customVcc.save();
-    }
 
-    handleMaxChange(event) {
-
-        this.setState({ maxIndex: event.target.value })
+        console.log(row, item);
     }
 
     setAll() {
-        const newValue = Array(11).fill(Array(11).fill(this.state.setAllIndex));
+        const newValue = Array(21).fill(Array(21).fill(this.state.fillSelected));
+        newValue[9][0] = 0;
+        newValue[9][20] = 0;
+        newValue[11][10] = 0;
 
         this.setState({
             value: newValue
         });
     }
 
-    handleSetChange(event) {
-
-        this.setState({ setAllIndex: event.target.value })
-    }
-    assignColor(value) {
-        if (value < Koji.config.colors.gridItemColors.length) {
-            return Koji.config.colors.gridItemColors[value];
-        } else {
-            return "#ffffff";
-        }
+    handleFillChange(event) {
+        this.setState({ fillSelected: event.target.value });
     }
 
     render() {
         return (
             <Wrapper>
-                <InputWrapper>
-                    <InputLabel>{"Max Index:"} </InputLabel>
-
-                    <Input type="number" onChange={(event) => this.handleMaxChange(event)} value={this.state.maxIndex} />
-                </InputWrapper>
-
+                <Label>{"- Click on tiles to toggle maze elements"}</Label>
+                <Label>{"- If you make a gap, make sure there is also a gap on the opposite side"}</Label>
+                <Label>{"- Some tiles are reserved for player and enemy spawns and cannot be changed"}</Label>
                 <Grid theme={this.state.theme}>
                     {this.state.value.map((row, i) => (
                         <GridRow key={i}>
@@ -245,31 +162,24 @@ class App extends React.PureComponent {
                                 <GridItem
                                     key={`${i}-${j}`}
                                     isSelected={item === 1}
-                                    onClick={() => this.onIncrease(i, j)}
+                                    onClick={() => {
+                                        if (!(j == 10 && i == 11) &&
+                                            !(j == 2 && i == 1) &&
+                                            !(j == 18 && i == 1) &&
+                                            !(j == 2 && i == 19) &&
+                                            !(j == 18 && i == 19)) {
+                                            this.onIncrease(i, j)
+                                        }
+                                    }}
                                     theme={this.state.theme}
-                                    style={{ backgroundColor: this.assignColor(this.state.value[i][j]) }}
                                 >
-                                    {this.state.value[i][j]}
+                                    {this.state.value[i][j] > 0 && <Icon src={this.state.icons[this.state.value[i][j]]}></Icon>}
+
                                 </GridItem>
                             ))}
                         </GridRow>
                     ))}
                 </Grid>
-
-
-                <InputWrapper style={{ justifyContent: "flex-end", marginTop: "3vmin", marginRight: "3vmin" }}>
-
-                    <InputButton
-                        onClick={() => this.setAll()}
-                    >{"Fill"}
-                    </InputButton>
-
-                    <Input type="number" onChange={(event) => this.handleSetChange(event)} value={this.state.setAllIndex} />
-                </InputWrapper>
-
-                <WarningLabel> {"0 - Empty Space"} </WarningLabel>
-                <WarningLabel> {"Important: Grid values must NOT exceed the array length of objects in the level."} </WarningLabel>
-                <WarningLabel> {"Example: If you have 3 available blocks defined, grid values must not be higher than 3."} </WarningLabel>
             </Wrapper>
         );
     }
