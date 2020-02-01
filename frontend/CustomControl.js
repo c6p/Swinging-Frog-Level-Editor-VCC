@@ -71,7 +71,7 @@ class App extends React.PureComponent {
         this.state = {
             value: initialGrid,
             theme: this.customVcc.theme,
-            maxIndex: 2,
+            maxIndex: 1,
             setAllIndex: 0,
             icons: [Koji.config.images.emptySpace,
             Koji.config.images.wall]
