@@ -1,9 +1,6 @@
 {
   "images": {
     "wall": "https://images.koji-cdn.com/f12aa857-d33d-4808-8268-209c047a14a4/v64s4-bc65b30e8743476f9ef1a9e7c08c9678.png",
-    "food1": "https://images.koji-cdn.com/f12aa857-d33d-4808-8268-209c047a14a4/endzy-aa4f7739853b4051b50c5be932ce5d16.png",
-    "food2": "https://images.koji-cdn.com/f12aa857-d33d-4808-8268-209c047a14a4/k107d-e9af1bf6601644e2ada110bf7bebaff5.png",
-    "food3": "https://images.koji-cdn.com/f12aa857-d33d-4808-8268-209c047a14a4/j9j8z-36409258cf2b421aaf3b348efeed479a.png",
     "emptySpace": ""
   },
   "@@editor": [
@@ -16,21 +13,6 @@
         {
           "key": "wall",
           "name": "Wall",
-          "type": "image"
-        },
-        {
-          "key": "food1",
-          "name": "Food 1",
-          "type": "image"
-        },
-        {
-          "key": "food2",
-          "name": "Food 2",
-          "type": "image"
-        },
-        {
-          "key": "food3",
-          "name": "Food 3",
           "type": "image"
         }
       ]

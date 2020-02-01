@@ -66,7 +66,7 @@ class App extends React.PureComponent {
 
         this.customVcc = new CustomVcc();
 
-        const initialGrid = Array(21).fill(Array(21).fill(0));
+        const initialGrid = Array(12).fill(Array(12).fill(0));
 
         this.state = {
             value: initialGrid,
