@@ -127,7 +127,7 @@ class App extends React.PureComponent {
     render() {
         return (
             <Wrapper>
-                <Label>{"- Click on tiles to toggle maze elements"}</Label>
+                <Label>{"- Clxck on txles to toggle maze elements"}</Label>
                 <Label>{"- If you make a gap, make sure there is also a gap on the opposite side"}</Label>
                 <Label>{"- Some tiles are reserved for player and enemy spawns and cannot be changed"}</Label>
                 <Grid theme={this.state.theme}>
