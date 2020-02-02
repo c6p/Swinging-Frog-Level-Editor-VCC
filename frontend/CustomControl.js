@@ -8,7 +8,6 @@ const Wrapper = styled.div`
     margin: 0;
     width: auto;
     height: 100%;
-    padding-top: 5vmin;
     display: flex;
     flex-direction: column;
     background-color: ${Koji.config.colors.background};
