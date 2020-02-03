@@ -3,6 +3,12 @@ import styled from 'styled-components';
 import CustomVcc from '@withkoji/custom-vcc-sdk';
 import Koji from "@withkoji/vcc";
 
+const Main = styled.div`
+    padding: 0;
+    margin: 0;
+    background-color: #1e1e1e;
+`;
+
 const Wrapper = styled.div`
     padding: 0;
     margin: 0;
@@ -14,15 +20,11 @@ const Wrapper = styled.div`
 `;
 
 const Grid = styled.div`
-    
     width: auto;
     display: flex;
     flex-direction: column;
-
     user-select: none;
     text-align: center;
-    
-    
 `;
 
 const GridRow = styled.div`
@@ -33,37 +35,66 @@ const GridRow = styled.div`
 
 const GridItem = styled.div`
     cursor: pointer;
-    
     width: 30px;
     height: 30px;
-   
-
     &:hover{
         opacity: 0.7;
     }
 `;
 
 const Icon = styled.img`
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-  backgroundColor: ${Koji.config.colors.gridItemBackground};
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
 `;
 
 const Header = styled.div`
-  font-size: 14px;
-  position: fixed;
-  top: 0px;
-  right: 0px;
-
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 0px 0px 6px 6px;
+    height: 57px;
+    width: 166px;
+    position: fixed;
+    top: 0px;
+    left: calc(50% - 83px);
+    z-index: 999;
 `;
 
 const Piece = styled.button`
-  background-color: #000000;
-
+    background-color: transparent;
+    border-radius: 6px;
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+    border: 0px;
+    margin-left: 4px;
+    margin-top: 3px;
+    cursor: pointer;
+    &:hover{
+        background-color: rgba(255, 255, 255, 0.3);
+    }
 `;
 
-let maxValue = 0;
+const PieceActive = styled.button`
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+    border: 0px;
+    margin-left: 4px;
+    margin-top: 3px;
+    cursor: pointer;
+`;
+
+const Blank = styled.div`
+    background-color: #1e1e1e;
+    border-radius: 6px;
+    border: 1px solid #777777;
+    width: 40px;
+    height: 40px;
+    margin-right: 6px;
+`;
+
 class App extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -76,11 +107,13 @@ class App extends React.PureComponent {
             value: initialGrid,
             theme: this.customVcc.theme,
             maxIndex: 2,
+            currValue: 0,
             setAllIndex: 0,
-            icons: [Koji.config.images.emptySpace,
-            Koji.config.images.wall,
-            Koji.config.images.player]
-
+            icons: [
+                Koji.config.images.emptySpace,
+                Koji.config.images.wall,
+                Koji.config.images.player
+            ]
         };
 
         this.customVcc.onUpdate((newProps) => {
@@ -101,37 +134,43 @@ class App extends React.PureComponent {
 
     componentDidMount() {
         this.customVcc.register('50%', '100vh');
-
-
-        WebFont.load({ google: { families: [Koji.config.settings.googleFont] } });
-        document.body.style.fontFamily = Koji.config.settings.googleFont;
-
+        //WebFont.load({ google: { families: [Koji.config.settings.googleFont] } });
+        //document.body.style.fontFamily = Koji.config.settings.googleFont;
         document.addEventListener('contextmenu', event => event.preventDefault());
-
     }
 
-    onIncrease(row, item) {
+    chooseAsset(index) {
+        this.setState({ currValue: index });
+    }
 
+    onSettingAsset(row, item) {
         const newValue = [...this.state.value];
-        const newRow = [...newValue[row]];
-        newRow[item]++;
-        if (newRow[item] > this.state.maxIndex) {
-            newRow[item] = 0;
+        if(this.state.currValue == 2){
+            for(let i=0; i<newValue.length; i++){
+                if(newValue[i].indexOf(2) != -1){
+                    newValue[i][newValue[i].indexOf(2)] = 0;
+                    break;
+                }
+            }
         }
-
+        const newRow = [...newValue[row]];
+        newRow[item] = this.state.currValue;
         newValue[row] = newRow;
         this.customVcc.change(newValue);
         this.customVcc.save();
-
-        console.log(row, item);
     }
 
     render() {
         return (
             <Main>
+                <Header>
+                    {this.state.currValue == 0 ? <PieceActive onClick={() => {this.chooseAsset(0)}}><Blank /></PieceActive> : <Piece onClick={() => {this.chooseAsset(0)}}><Blank /></Piece>}
+                    {this.state.currValue == 1 ? <PieceActive onClick={() => {this.chooseAsset(1)}}><Icon src={this.state.icons[1]}></Icon></PieceActive> : <Piece onClick={() => {this.chooseAsset(1)}}><Icon src={this.state.icons[1]}></Icon></Piece>}
+                    {this.state.currValue == 2 ? <PieceActive onClick={() => {this.chooseAsset(2)}}><Icon src={this.state.icons[2]}></Icon></PieceActive> : <Piece onClick={() => {this.chooseAsset(2)}}><Icon src={this.state.icons[2]}></Icon></Piece>}
+                </Header>
                 <Wrapper style={{
-                        position: 'absolute', left: '50%', top: '50%',
-                        transform: 'translate(-50%, -50%)'
+                        position: 'absolute', left: '50%', top: '60px',
+                        transform: 'translate(-50%, 0)'
                     }}>
                     <Grid theme={this.state.theme}>
                         {this.state.value.map((row, i) => (
@@ -140,13 +179,10 @@ class App extends React.PureComponent {
                                     <GridItem
                                         key={`${i}-${j}`}
                                         isSelected={item === 1}
-                                        onClick={() => {
-                                            this.onIncrease(i, j)
-                                        }}
+                                        onClick={() => { this.onSettingAsset(i, j) }}
                                         theme={this.state.theme}
                                     >
                                         {this.state.value[i][j] > 0 && <Icon src={this.state.icons[this.state.value[i][j]]}></Icon>}
-
                                     </GridItem>
                                 ))}
                             </GridRow>

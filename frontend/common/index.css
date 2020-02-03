@@ -30,3 +30,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.normal{
+    background-color: transparent;
+}
+
+.active{
+    background-color: rgba(30, 30, 30, 0.7);
+}
