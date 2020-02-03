@@ -6,8 +6,8 @@ import Koji from "@withkoji/vcc";
 const Wrapper = styled.div`
     padding: 0;
     margin: 0;
-    width: auto;
-    height: 75%;
+    width: 100%;
+    height: auto;
     display: flex;
     flex-direction: column;
 `;
@@ -25,7 +25,7 @@ const Grid = styled.div`
 `;
 
 const GridRow = styled.div`
-    width: 100%;
+    width: 96%;
     display: flex;
     
 `;
@@ -33,7 +33,7 @@ const GridRow = styled.div`
 const GridItem = styled.div`
     cursor: pointer;
     
-    width: 10%
+    width: 8%
     height: auto;
    
 
