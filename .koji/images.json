@@ -2,6 +2,7 @@
   "images": {
     "player": "https://images.koji-cdn.com/98ae694e-6482-4f46-a8b0-de361c269965/lpxl6-escplayer.png",
     "wall": "https://images.koji-cdn.com/98ae694e-6482-4f46-a8b0-de361c269965/dsbkd-wblock_.png",
+    "grid": "https://images.koji-cdn.com/98ae694e-6482-4f46-a8b0-de361c269965/ce0ei-grid.png",
     "emptySpace": ""
   },
   "@@editor": [
@@ -19,6 +20,11 @@
         {
           "key": "wall",
           "name": "Crate",
+          "type": "image"
+        },
+        {
+          "key": "grid",
+          "name": "Grid",
           "type": "image"
         }
       ]
