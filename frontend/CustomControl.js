@@ -25,7 +25,7 @@ const Grid = styled.div`
 `;
 
 const GridRow = styled.div`
-    width: 96%;
+    width: 100%;
     display: flex;
     
 `;
@@ -33,7 +33,7 @@ const GridRow = styled.div`
 const GridItem = styled.div`
     cursor: pointer;
     
-    width: 8%
+    width: auto;
     height: auto;
    
 
