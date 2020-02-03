@@ -33,8 +33,8 @@ const GridRow = styled.div`
 const GridItem = styled.div`
     cursor: pointer;
     
-    width: auto;
-    height: auto;
+    width: 30px;
+    height: 30px;
    
 
     &:hover{
