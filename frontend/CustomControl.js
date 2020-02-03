@@ -95,7 +95,7 @@ class App extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.customVcc.register('50%', '90vh');
+        this.customVcc.register('50%', '100vh');
 
 
         WebFont.load({ google: { families: [Koji.config.settings.googleFont] } });
