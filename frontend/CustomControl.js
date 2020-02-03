@@ -44,6 +44,7 @@ const GridItem = styled.div`
     width: 8vw;
     height: 8vw;
     &:hover{
+        background-color: rgba(30, 30, 30, 0.7);
         opacity: 0.7;
     }
 `;
@@ -99,9 +100,6 @@ const Blank = styled.div`
     width: 40px;
     height: 40px;
     margin-right: 6px;
-    &:hover{
-        background-color: rgba(30, 30, 30, 0.5);
-    }
 `;
 
 class App extends React.PureComponent {
