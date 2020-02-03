@@ -10,7 +10,6 @@ const Wrapper = styled.div`
     height: auto;
     display: flex;
     justifyContent: center;
-    flex-direction: column;
 `;
 
 const Grid = styled.div`
