@@ -14,6 +14,8 @@ const Wrapper = styled.div`
     left: 50%;
     top: 75px;
     transform: translate(-50%, 0);
+    width: 96vw;
+    height: 96vw;
     padding: 0;
     margin: 0;
     display: flex;
@@ -32,15 +34,15 @@ const Grid = styled.div`
 `;
 
 const GridRow = styled.div`
-    width: 100%;
+    width: 96%;
     display: flex;
     
 `;
 
 const GridItem = styled.div`
     cursor: pointer;
-    width: 30px;
-    height: 30px;
+    width: 8%;
+    height: auto;
     &:hover{
         opacity: 0.7;
     }
