@@ -42,7 +42,7 @@ const GridRow = styled.div`
 const GridItem = styled.div`
     cursor: pointer;
     width: 8vw;
-    height: auto;
+    height: 8vw;
     &:hover{
         opacity: 0.7;
     }
