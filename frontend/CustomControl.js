@@ -132,13 +132,7 @@ class App extends React.PureComponent {
                                     key={`${i}-${j}`}
                                     isSelected={item === 1}
                                     onClick={() => {
-                                        if (!(j == 10 && i == 11) &&
-                                            !(j == 2 && i == 1) &&
-                                            !(j == 18 && i == 1) &&
-                                            !(j == 2 && i == 19) &&
-                                            !(j == 18 && i == 19)) {
-                                            this.onIncrease(i, j)
-                                        }
+                                        this.onIncrease(i, j)
                                     }}
                                     theme={this.state.theme}
                                 >
