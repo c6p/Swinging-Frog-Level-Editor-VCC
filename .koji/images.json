@@ -1,6 +1,7 @@
 {
   "images": {
-    "wall": "https://images.koji-cdn.com/f12aa857-d33d-4808-8268-209c047a14a4/v64s4-bc65b30e8743476f9ef1a9e7c08c9678.png",
+    "player": "https://images.koji-cdn.com/98ae694e-6482-4f46-a8b0-de361c269965/lpxl6-escplayer.png",
+    "wall": "https://images.koji-cdn.com/98ae694e-6482-4f46-a8b0-de361c269965/dsbkd-wblock_.png",
     "emptySpace": ""
   },
   "@@editor": [
@@ -11,8 +12,13 @@
       "source": "images.json",
       "fields": [
         {
+          "key": "player",
+          "name": "Player",
+          "type": "image"
+        },
+        {
           "key": "wall",
-          "name": "Wall",
+          "name": "Crate",
           "type": "image"
         }
       ]
