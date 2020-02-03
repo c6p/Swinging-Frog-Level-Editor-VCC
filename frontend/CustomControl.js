@@ -9,8 +9,8 @@ const Wrapper = styled.div`
     width: 100%;
     height: auto;
     display: flex;
+    justifyContent: center;
     flex-direction: column;
-    text-align: center;
 `;
 
 const Grid = styled.div`
