@@ -7,10 +7,9 @@ const Wrapper = styled.div`
     padding: 0;
     margin: 0;
     width: auto;
-    height: auto;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: ${Koji.config.colors.background};
 `;
 
 const Grid = styled.div`
