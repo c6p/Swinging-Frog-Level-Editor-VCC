@@ -6,8 +6,6 @@ import Koji from "@withkoji/vcc";
 const Wrapper = styled.div`
     padding: 0;
     margin: 0;
-    width: 100%;
-    height: auto;
     display: flex;
     flex-direction: column;
 `;
