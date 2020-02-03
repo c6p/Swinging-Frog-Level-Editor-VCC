@@ -8,7 +8,7 @@ const Wrapper = styled.div`
     margin: 0;
     display: flex;
     flex-direction: column;
-    background: url(${Koji.config.colors.gridItemBackground});
+    background: url(${Koji.config.images.grid});
     background-size: 100% 100%;
     background-repeat: no-repeat;
 `;
