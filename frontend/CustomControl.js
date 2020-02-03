@@ -44,7 +44,7 @@ const GridItem = styled.div`
     width: 8vw;
     height: 8vw;
     &:hover{
-        background-color: rgba(30, 30, 30, 0.7);
+        background-color: rgba(255, 255, 255, 0.5);
         opacity: 0.7;
     }
 `;
