@@ -10,6 +10,10 @@ const Main = styled.div`
 `;
 
 const Wrapper = styled.div`
+    position: absolute;
+    left: 50%;
+    top: 75px;
+    transform: translate(-50%, 0);
     padding: 0;
     margin: 0;
     display: flex;
@@ -168,10 +172,7 @@ class App extends React.PureComponent {
                     {this.state.currValue == 1 ? <PieceActive onClick={() => {this.chooseAsset(1)}}><Icon src={this.state.icons[1]}></Icon></PieceActive> : <Piece onClick={() => {this.chooseAsset(1)}}><Icon src={this.state.icons[1]}></Icon></Piece>}
                     {this.state.currValue == 2 ? <PieceActive onClick={() => {this.chooseAsset(2)}}><Icon src={this.state.icons[2]}></Icon></PieceActive> : <Piece onClick={() => {this.chooseAsset(2)}}><Icon src={this.state.icons[2]}></Icon></Piece>}
                 </Header>
-                <Wrapper style={{
-                        position: 'absolute', left: '50%', top: '60px',
-                        transform: 'translate(-50%, 0)'
-                    }}>
+                <Wrapper>
                     <Grid theme={this.state.theme}>
                         {this.state.value.map((row, i) => (
                             <GridRow key={i}>
