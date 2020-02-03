@@ -50,11 +50,16 @@ const Icon = styled.img`
   backgroundColor: ${Koji.config.colors.gridItemBackground};
 `;
 
-const Label = styled.div`
+const Header = styled.div`
   font-size: 14px;
-  color: ${Koji.config.colors.text};
-  margin-left: 2vmin;
-  margin-bottom: 1vmin;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+
+`;
+
+const Piece = styled.button`
+  background-color: #000000;
 
 `;
 
@@ -123,30 +128,37 @@ class App extends React.PureComponent {
 
     render() {
         return (
-            <Wrapper style={{
-                    position: 'absolute', left: '50%', top: '50%',
-                    transform: 'translate(-50%, -50%)'
-                }}>
-                <Grid theme={this.state.theme}>
-                    {this.state.value.map((row, i) => (
-                        <GridRow key={i}>
-                            {this.state.value[i].map((item, j) => (
-                                <GridItem
-                                    key={`${i}-${j}`}
-                                    isSelected={item === 1}
-                                    onClick={() => {
-                                        this.onIncrease(i, j)
-                                    }}
-                                    theme={this.state.theme}
-                                >
-                                    {this.state.value[i][j] > 0 && <Icon src={this.state.icons[this.state.value[i][j]]}></Icon>}
+            <Main>
+                <Header>
+                    <Piece><Icon src={this.state.icons[0]}></Icon></Piece>
+                    <Piece><Icon src={this.state.icons[1]}></Icon></Piece>
+                    <Piece><Icon src={this.state.icons[2]}></Icon></Piece>
+                </Header>
+                <Wrapper style={{
+                        position: 'absolute', left: '50%', top: '50%',
+                        transform: 'translate(-50%, -50%)'
+                    }}>
+                    <Grid theme={this.state.theme}>
+                        {this.state.value.map((row, i) => (
+                            <GridRow key={i}>
+                                {this.state.value[i].map((item, j) => (
+                                    <GridItem
+                                        key={`${i}-${j}`}
+                                        isSelected={item === 1}
+                                        onClick={() => {
+                                            this.onIncrease(i, j)
+                                        }}
+                                        theme={this.state.theme}
+                                    >
+                                        {this.state.value[i][j] > 0 && <Icon src={this.state.icons[this.state.value[i][j]]}></Icon>}
 
-                                </GridItem>
-                            ))}
-                        </GridRow>
-                    ))}
-                </Grid>
-            </Wrapper>
+                                    </GridItem>
+                                ))}
+                            </GridRow>
+                        ))}
+                    </Grid>
+                </Wrapper>
+            </Main>
         );
     }
 }
