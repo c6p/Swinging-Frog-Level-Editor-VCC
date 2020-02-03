@@ -129,11 +129,6 @@ class App extends React.PureComponent {
     render() {
         return (
             <Main>
-                <Header>
-                    <Piece><Icon src={this.state.icons[0]}></Icon></Piece>
-                    <Piece><Icon src={this.state.icons[1]}></Icon></Piece>
-                    <Piece><Icon src={this.state.icons[2]}></Icon></Piece>
-                </Header>
                 <Wrapper style={{
                         position: 'absolute', left: '50%', top: '50%',
                         transform: 'translate(-50%, -50%)'
