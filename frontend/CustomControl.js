@@ -9,7 +9,7 @@ const Wrapper = styled.div`
     width: 100%;
     height: auto;
     display: flex;
-    justifyContent: center;
+    flex-direction: column;
 `;
 
 const Grid = styled.div`
@@ -122,7 +122,10 @@ class App extends React.PureComponent {
 
     render() {
         return (
-            <Wrapper>
+            <Wrapper style={{
+                    position: 'absolute', left: '50%', top: '50%',
+                    transform: 'translate(-50%, -50%)'
+                }}>
                 <Grid theme={this.state.theme}>
                     {this.state.value.map((row, i) => (
                         <GridRow key={i}>
