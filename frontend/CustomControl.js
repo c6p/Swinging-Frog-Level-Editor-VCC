@@ -34,14 +34,14 @@ const Grid = styled.div`
 `;
 
 const GridRow = styled.div`
-    width: 96%;
+    width: 96vw;
     display: flex;
     
 `;
 
 const GridItem = styled.div`
     cursor: pointer;
-    width: 8%;
+    width: 8vw;
     height: auto;
     &:hover{
         opacity: 0.7;
