@@ -59,10 +59,10 @@ const Header = styled.div`
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: 0px 0px 6px 6px;
     height: 57px;
-    width: 166px;
+    width: 220px;
     position: fixed;
     top: 0px;
-    left: calc(50% - 83px);
+    left: calc(50% - 110px);
     z-index: 999;
 `;
 
@@ -113,13 +113,14 @@ class App extends React.PureComponent {
         this.state = {
             value: initialGrid,
             theme: this.customVcc.theme,
-            maxIndex: 2,
+            maxIndex: 3,
             currValue: 0,
             setAllIndex: 0,
             icons: [
                 Koji.config.images.emptySpace,
                 Koji.config.images.wall,
-                Koji.config.images.player
+                Koji.config.images.player,
+                Koji.config.images.exit
             ]
         };
 
@@ -160,6 +161,14 @@ class App extends React.PureComponent {
                 }
             }
         }
+        if(this.state.currValue == 3){
+            for(let i=0; i<newValue.length; i++){
+                if(newValue[i].indexOf(3) != -1){
+                    newValue[i][newValue[i].indexOf(3)] = 0;
+                    break;
+                }
+            }
+        }
         const newRow = [...newValue[row]];
         newRow[item] = this.state.currValue;
         newValue[row] = newRow;
@@ -174,6 +183,7 @@ class App extends React.PureComponent {
                     {this.state.currValue == 0 ? <PieceActive onClick={() => {this.chooseAsset(0)}}><Blank /></PieceActive> : <Piece onClick={() => {this.chooseAsset(0)}}><Blank /></Piece>}
                     {this.state.currValue == 1 ? <PieceActive onClick={() => {this.chooseAsset(1)}}><Icon src={this.state.icons[1]}></Icon></PieceActive> : <Piece onClick={() => {this.chooseAsset(1)}}><Icon src={this.state.icons[1]}></Icon></Piece>}
                     {this.state.currValue == 2 ? <PieceActive onClick={() => {this.chooseAsset(2)}}><Icon src={this.state.icons[2]}></Icon></PieceActive> : <Piece onClick={() => {this.chooseAsset(2)}}><Icon src={this.state.icons[2]}></Icon></Piece>}
+                    {this.state.currValue == 3 ? <PieceActive onClick={() => {this.chooseAsset(3)}}><Icon src={this.state.icons[3]}></Icon></PieceActive> : <Piece onClick={() => {this.chooseAsset(3)}}><Icon src={this.state.icons[3]}></Icon></Piece>}
                 </Header>
                 <Wrapper>
                     <Grid theme={this.state.theme}>
