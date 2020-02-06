@@ -12,7 +12,7 @@ const Main = styled.div`
 const Wrapper = styled.div`
     position: absolute;
     left: 50%;
-    top: 75px;
+    top: 66px;
     transform: translate(-50%, 0);
     width: 96vw;
     height: 96vw;
@@ -114,7 +114,7 @@ class App extends React.PureComponent {
             value: initialGrid,
             theme: this.customVcc.theme,
             maxIndex: 3,
-            currValue: 0,
+            currValue: 1,
             setAllIndex: 0,
             icons: [
                 Koji.config.images.emptySpace,
