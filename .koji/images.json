@@ -1,10 +1,9 @@
 {
   "images": {
     "player": "https://images.koji-cdn.com/98ae694e-6482-4f46-a8b0-de361c269965/lpxl6-escplayer.png",
-    "wall": "https://images.koji-cdn.com/98ae694e-6482-4f46-a8b0-de361c269965/dsbkd-wblock_.png",
-    "grid": "https://images.koji-cdn.com/98ae694e-6482-4f46-a8b0-de361c269965/xts0i-grid.png",
     "exit": "https://images.koji-cdn.com/98ae694e-6482-4f46-a8b0-de361c269965/lz288-exit.png",
-    "emptySpace": ""
+    "emptySpace": "",
+    "handle": "https://images.koji-cdn.com/153fff5c-5119-46c5-8c18-3e689c66c53a/dmm1l-handle.png"
   },
   "@@editor": [
     {
@@ -19,18 +18,13 @@
           "type": "image"
         },
         {
-          "key": "wall",
-          "name": "Crate",
+          "key": "handle",
+          "name": "Handle",
           "type": "image"
         },
         {
           "key": "exit",
           "name": "Exit",
-          "type": "image"
-        },
-        {
-          "key": "grid",
-          "name": "Grid",
           "type": "image"
         }
       ]

@@ -20,33 +20,13 @@ const Wrapper = styled.div`
     margin: 0;
     display: flex;
     flex-direction: column;
-    background: url(${Koji.config.images.grid});
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
+    background-color: rgba(0, 0, 0, 0.4);
 `;
 
-const Grid = styled.div`
-    width: auto;
-    display: flex;
-    flex-direction: column;
-    user-select: none;
-    text-align: center;
-`;
-
-const GridRow = styled.div`
-    width: 96vw;
-    display: flex;
-    
-`;
-
-const GridItem = styled.div`
-    cursor: pointer;
-    width: 8vw;
-    height: 8vw;
-    &:hover{
-        background-color: rgba(255, 255, 255, 0.5);
-        opacity: 0.7;
-    }
+const Item = styled.img`
+    position: absolute;
+    width: 16px;
+    height: 16px;
 `;
 
 const Icon = styled.img`
@@ -102,23 +82,28 @@ const Blank = styled.div`
     margin-right: 6px;
 `;
 
+function relativeCoords ( event ) {
+  var bounds = event.target.getBoundingClientRect();
+  var x = event.clientX - bounds.left;
+  var y = event.clientY - bounds.top;
+  return {x: Math.round(x), y: Math.round(y)};
+}
+
 class App extends React.PureComponent {
     constructor(props) {
         super(props);
 
         this.customVcc = new CustomVcc();
 
-        const initialGrid = Array(12).fill(Array(12).fill(0));
-
         this.state = {
-            value: initialGrid,
+            value: [],
             theme: this.customVcc.theme,
             maxIndex: 3,
             currValue: 1,
             setAllIndex: 0,
             icons: [
                 Koji.config.images.emptySpace,
-                Koji.config.images.wall,
+                Koji.config.images.handle,
                 Koji.config.images.player,
                 Koji.config.images.exit
             ]
@@ -142,6 +127,9 @@ class App extends React.PureComponent {
 
     componentDidMount() {
         this.customVcc.register('50%', '100vh');
+        this.customVcc.onUpdate(({ value }) => {
+            this.setState({ value });
+        });
         //WebFont.load({ google: { families: [Koji.config.settings.googleFont] } });
         //document.body.style.fontFamily = Koji.config.settings.googleFont;
         document.addEventListener('contextmenu', event => event.preventDefault());
@@ -151,27 +139,20 @@ class App extends React.PureComponent {
         this.setState({ currValue: index });
     }
 
-    onSettingAsset(row, item) {
+    onSettingAsset(event) {
         const newValue = [...this.state.value];
-        if(this.state.currValue == 2){
-            for(let i=0; i<newValue.length; i++){
-                if(newValue[i].indexOf(2) != -1){
-                    newValue[i][newValue[i].indexOf(2)] = 0;
-                    break;
-                }
+        const pos = relativeCoords(event);
+        if (this.state.currValue === 0) {
+            const e = event.target;
+            console.log(newValue, e);
+            if (e.tagName === "IMG") {
+                const index = newValue.findIndex(({x,y}) => x===e.x && y===e.y);
+                if (index > -1)
+                    newValue.splice(index, 1);
             }
+        } else if (this.state.currValue === 1) {
+            newValue.push({x: pos.x-8, y: pos.y-8});    // 16x16
         }
-        if(this.state.currValue == 3){
-            for(let i=0; i<newValue.length; i++){
-                if(newValue[i].indexOf(3) != -1){
-                    newValue[i][newValue[i].indexOf(3)] = 0;
-                    break;
-                }
-            }
-        }
-        const newRow = [...newValue[row]];
-        newRow[item] = this.state.currValue;
-        newValue[row] = newRow;
         this.customVcc.change(newValue);
         this.customVcc.save();
     }
@@ -185,23 +166,13 @@ class App extends React.PureComponent {
                     {this.state.currValue == 2 ? <PieceActive onClick={() => {this.chooseAsset(2)}}><Icon src={this.state.icons[2]}></Icon></PieceActive> : <Piece onClick={() => {this.chooseAsset(2)}}><Icon src={this.state.icons[2]}></Icon></Piece>}
                     {this.state.currValue == 3 ? <PieceActive onClick={() => {this.chooseAsset(3)}}><Icon src={this.state.icons[3]}></Icon></PieceActive> : <Piece onClick={() => {this.chooseAsset(3)}}><Icon src={this.state.icons[3]}></Icon></Piece>}
                 </Header>
-                <Wrapper>
-                    <Grid theme={this.state.theme}>
-                        {this.state.value.map((row, i) => (
-                            <GridRow key={i}>
-                                {this.state.value[i].map((item, j) => (
-                                    <GridItem
-                                        key={`${i}-${j}`}
-                                        isSelected={item === 1}
-                                        onClick={() => { this.onSettingAsset(i, j) }}
-                                        theme={this.state.theme}
-                                    >
-                                        {this.state.value[i][j] > 0 && <Icon src={this.state.icons[this.state.value[i][j]]}></Icon>}
-                                    </GridItem>
-                                ))}
-                            </GridRow>
-                        ))}
-                    </Grid>
+                <Wrapper
+                theme={this.state.theme}
+                onClick={(event) => this.onSettingAsset(event)}
+                >
+                    {this.state.value.map(handle => (
+                        <Item style={{left: handle.x, top: handle.y}} src={Koji.config.images.handle}></Item>
+                      ))}
                 </Wrapper>
             </Main>
         );
