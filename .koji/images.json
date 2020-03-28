@@ -1,9 +1,9 @@
 {
   "images": {
     "player": "https://images.koji-cdn.com/98ae694e-6482-4f46-a8b0-de361c269965/lpxl6-escplayer.png",
-    "exit": "https://images.koji-cdn.com/98ae694e-6482-4f46-a8b0-de361c269965/lz288-exit.png",
     "emptySpace": "",
-    "handle": "https://images.koji-cdn.com/153fff5c-5119-46c5-8c18-3e689c66c53a/dmm1l-handle.png"
+    "handle": "https://images.koji-cdn.com/153fff5c-5119-46c5-8c18-3e689c66c53a/w1q7n-editorhandle.png",
+    "platform": "https://images.koji-cdn.com/153fff5c-5119-46c5-8c18-3e689c66c53a/0rmie-editorplatform.png"
   },
   "@@editor": [
     {
@@ -23,8 +23,8 @@
           "type": "image"
         },
         {
-          "key": "exit",
-          "name": "Exit",
+          "key": "platform",
+          "name": "Platform",
           "type": "image"
         }
       ]
