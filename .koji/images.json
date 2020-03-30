@@ -2,8 +2,9 @@
   "images": {
     "player": "https://images.koji-cdn.com/98ae694e-6482-4f46-a8b0-de361c269965/lpxl6-escplayer.png",
     "emptySpace": "",
-    "handle": "https://images.koji-cdn.com/153fff5c-5119-46c5-8c18-3e689c66c53a/w1q7n-editorhandle.png",
-    "platform": "https://images.koji-cdn.com/153fff5c-5119-46c5-8c18-3e689c66c53a/0rmie-editorplatform.png"
+    "handle": "https://images.koji-cdn.com/153fff5c-5119-46c5-8c18-3e689c66c53a/m6xey-editorhandle.png",
+    "platform": "https://images.koji-cdn.com/153fff5c-5119-46c5-8c18-3e689c66c53a/0rmie-editorplatform.png",
+    "obstacle": "https://images.koji-cdn.com/153fff5c-5119-46c5-8c18-3e689c66c53a/7omeq-editorobstacle.png"
   },
   "@@editor": [
     {
@@ -25,6 +26,11 @@
         {
           "key": "platform",
           "name": "Platform",
+          "type": "image"
+        },
+        {
+          "key": "obstacle",
+          "name": "Obstacle",
           "type": "image"
         }
       ]

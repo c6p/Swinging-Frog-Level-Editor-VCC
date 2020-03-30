@@ -5,14 +5,16 @@
   "author": "username",
   "scripts": {
     "build": "NODE_ENV=production webpack --config ./.internals/webpack.production.js --color -p --progress --hide-modules --display-optimization-bailout",
-    "prestar": "koji-vcc watch &",
+    "prestart": "koji-vcc watch &",
     "start": "webpack-dev-server --config ./.internals/webpack.development.js --inline --hot"
   },
   "dependencies": {
     "@withkoji/custom-vcc-sdk": "0.0.6",
     "@withkoji/vcc": "^1.1.1",
+    "rc-slider": "^9.2.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-draggable": "^4.2.0",
     "styled-components": "^4.2.0"
   },
   "devDependencies": {
