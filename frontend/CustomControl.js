@@ -211,7 +211,17 @@ class App extends React.PureComponent {
   componentDidMount() {
     this.customVcc.register('50%', '100vh');
     this.customVcc.onUpdate(({ value }) => {
-      this.setState({ value });
+      if (typeof value === 'object')
+        this.setState({ value });
+      else
+        this.setState({
+          value: {
+            width: 2160,
+            handles: [],
+            platforms: [],
+            obstacles: []
+          }
+        });
     });
     //WebFont.load({ google: { families: [Koji.config.settings.googleFont] } });
     //document.body.style.fontFamily = Koji.config.settings.googleFont;
