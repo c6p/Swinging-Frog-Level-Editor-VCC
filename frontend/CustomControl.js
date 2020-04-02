@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import CustomVcc from '@withkoji/custom-vcc-sdk';
-import Koji from "@withkoji/vcc";
-import LevelSettings from "LevelSettings.js"
-import HandleSettings from "HandleSettings.js"
-import PlatformSettings from "PlatformSettings.js"
-import ObstacleSettings from "ObstacleSettings.js"
+import Koji from '@withkoji/vcc';
+import LevelSettings from 'LevelSettings.js';
+import HandleSettings from 'HandleSettings.js';
+import PlatformSettings from 'PlatformSettings.js';
+import ObstacleSettings from 'ObstacleSettings.js';
+import Draggable from 'react-draggable';
 
 const [LEFT, TOP] = [20, 66];
 const HEIGHT = 1080;
@@ -19,7 +20,6 @@ const Main = styled.div`
     padding: 0;
     margin: 0;
 `;
-//background-color: #1e1e1e;
 
 const GameArea = styled.div`
     position: absolute;
@@ -33,31 +33,23 @@ const GameArea = styled.div`
     flex-direction: column;
     background-color: #6DD5FACC;
 `;
-//    left: calc(50% - 10px);
-//    transform: translate(-50%, 0);
 
 const Finish = styled.div`
   position: absolute;
   left: ${props => 20 + props.width + 'px'};
-  top: 66px;
-  width: 20px;
+  top: ${TOP}px;
+  width: 10px;
   height: 540px;
   background-image: linear-gradient(45deg, #333 25%, transparent 25%), linear-gradient(-45deg, #333 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #333 75%), linear-gradient(-45deg, transparent 75%, #333 75%);
-  background-size: 8px 8px;
-  background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
-`
-//left: ${props => 'calc(50% + ' + props.width/2 + 'px)'};
-//transform: translate(-50%, 0);
+  background-size: 10px 10px;
+  background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+`;
 
 const Highlight = styled.div`
   position: absolute;
   border: 1px #f00 solid;
 `;
-//  left: ${props => props.selected.offsetLeft}px;
-//  top: ${props => props.selected.offsetTop}px;
-//  width: ${props => props.selected.offsetWidth}px;
-//  height: ${props => props.selected.offsetHeight}px;
-//visible: ${props => props.selected!==null}px;
+
 
 const Handle = styled.img`
   position: absolute;
@@ -65,7 +57,6 @@ const Handle = styled.img`
   height: 10px;
   z-index: 30;
 `;
-//background-image: ${Koji.config.images.handle};
 
 const Platform = styled.img`
   position: absolute;
@@ -77,15 +68,16 @@ const Obstacle = styled.div`
   border: 3px #666 solid;
   z-index: 10;
 `;
-//
 
 const Player = styled.span`
   position: absolute;
   left: 25px;
   top: 0;
+  transform: translate(-50%, -50%);
   font-weight: bold;
   color: #f00;
   background-color: #fff;
+  user-select: none;
 `;
 
 
@@ -93,7 +85,6 @@ const Icon = styled.img`
     max-height: 100%;
     margin: 0 auto;
 `;
-//height: 100%;
 
 const Header = styled.div`
     display: flex;
@@ -102,6 +93,8 @@ const Header = styled.div`
     border-radius: 0px 0px 6px 6px;
     top: 0px;
     z-index: 999;
+    position: absolute;
+    width: 100%;
 `;
 
 const Toolbar = styled.div`
@@ -109,8 +102,6 @@ const Toolbar = styled.div`
     width: 220px;
     display: inline-block;
 `;
-// background-color: rgba(0, 0, 0, 0.4);
-//left: calc(50% - 110px);
 
 const Piece = styled.button`
     background-color: transparent;
@@ -143,14 +134,6 @@ const PieceActive = styled.button`
     vertical-align: bottom;
 `;
 
-const Blank = styled.div`
-    border: 1px solid #f00;
-    width: 40px;
-    height: 40px;
-    margin-right: 6px;
-`;
-
-
 function relativeCoords(event) {
   var bounds = event.target.getBoundingClientRect();
   var x = event.clientX - bounds.left;
@@ -173,12 +156,12 @@ class App extends React.PureComponent {
       },
       show: {
         level: true,
-        handle: false,
-        platform: false,
-        obstacle: false,
+        handles: false,
+        platforms: false,
+        obstacles: false,
       },
-      platform: {angle:0},
-      obstacle: {width:100, height:100, angle:0},
+      platforms: { angle: 0 },
+      obstacles: { width: 100, height: 100, angle: 0 },
       theme: this.customVcc.theme,
       maxIndex: 3,
       currValue: 1,
@@ -226,13 +209,13 @@ class App extends React.PureComponent {
     //WebFont.load({ google: { families: [Koji.config.settings.googleFont] } });
     //document.body.style.fontFamily = Koji.config.settings.googleFont;
     document.addEventListener('contextmenu', event => event.preventDefault());
-    document.addEventListener("keydown", (event) => this.handleKeyDown(event), false);
+    document.addEventListener('keydown', (event) => this.handleKeyDown(event), false);
   }
 
   handleKeyDown(event) {
     const s = this.state.selected.item;
     if (event.keyCode !== KEY_DELETE || s === null)
-      return
+      return;
 
     this.deleteSelectedItem();
   }
@@ -241,113 +224,101 @@ class App extends React.PureComponent {
     const s = this.state.selected.item;
     let [key, index] = s.id.split('_');
     this.state.value[key].splice(index, 1);
-    this.selectItem()
+    this.selectItem();
   }
 
-  modifySelectedItem(value) {
+  modifySelectedItem(value, mKey = null) {
     const s = this.state.selected.item;
     let [key, index] = s.id.split('_');
-    const newValue = {...this.state.value};
+    const newValue = { ...this.state.value };
     newValue[key][index] = value;
-    // TODO change defaults
-    //console.log(key, index, value, newValue)
     this.customVcc.change(newValue);
     this.customVcc.save();
+    if (mKey !== null)
+      this.setState(prevState => ({ [key]: { ...prevState[key], [mKey]: value[mKey] } }));
     window.requestAnimationFrame(() => {
-      const {left,top,width,height} = s.getBoundingClientRect()
-      this.setState({ selected: { left: left-LEFT, top: top-TOP, width, height, item:s }});
-    })
+      let { left, top, width, height } = s.getBoundingClientRect();
+      this.setState({ selected: { left: left - LEFT, top: top - TOP, width, height, item: s } });
+    });
   }
 
   chooseAsset(index) {
     this.setState({ currValue: index });
-    this.selectItem(null)
+    this.selectItem(null);
   }
 
   showDialog(type) {
     let show = {
       level: false,
-      handle: false,
-      platform: false,
-      obstacle: false,
-    }
+      handles: false,
+      platforms: false,
+      obstacles: false,
+    };
     switch (type) {
       case Items.HANDLE:
-        show.handle = true
-        break
+        show.handles = true;
+        break;
       case Items.PLATFORM:
-        show.platform = true
-        break
+        show.platforms = true;
+        break;
       case Items.OBSTACLE:
-        show.obstacle = true
-        break
+        show.obstacles = true;
+        break;
       default:
-        show.level = true
+        show.level = true;
     }
     this.setState({ show });
   }
 
   selectItem(item = null) {
-    let rect = BLANK_ITEM
+    let rect = BLANK_ITEM;
     let type = Items.LEVEL;
-    if (item!==null && item.classList.contains("Item")) {
-      rect = item.getBoundingClientRect()
-      if (item.classList.contains("Handle"))
+    if (item !== null && item.classList.contains('Item')) {
+      rect = item.getBoundingClientRect();
+      if (item.classList.contains('Handle'))
         type = Items.HANDLE;
-      else if (item.classList.contains("Platform"))
+      else if (item.classList.contains('Platform'))
         type = Items.PLATFORM;
-      else if (item.classList.contains("Obstacle"))
+      else if (item.classList.contains('Obstacle'))
         type = Items.OBSTACLE;
     }
-    const {left,top,width,height} = rect
-    this.setState({ selected: { left: left-LEFT, top: top-TOP, width, height, item }});
-    this.showDialog(type)
+    const { left, top, width, height } = rect;
+    this.setState({ selected: { left: left - LEFT, top: top - TOP, width, height, item } });
+    this.showDialog(type);
   }
 
   selectedObject() {
     const s = this.state.selected.item;
     if (!('id' in s))
-      return {}
+      return {};
     let [key, index] = s.id.split('_');
-    return this.state.value[key][index]
+    return this.state.value[key][index];
   }
 
   onSettingAsset(event) {
-    //console.log(event.target.classList)
-    //if (event.target.classList.contains("Item"))
-    //  this.selectItem(event.target)
-    //let {handles} = this.state.value
     if (this.state.currValue === 0) {
-      this.selectItem(event.target)
-      return
-      //this.selectItem(null)
-      //const e = event.target;
-      //console.log(newValue, e);
-      /*if (e.classList.contains("Handle")) {
-        const index = newValue.handles.findIndex(({ x, y }) => x === e.x && y === e.y);
-        if (index > -1)
-          newValue.handles.splice(index, 1);
-      }*/
+      this.selectItem(event.target);
+      return;
     }
-      if (!event.target.classList.contains("GameArea"))
-        return
-      const newValue = { ...this.state.value };
-      const pos = relativeCoords(event);
-      let key = null
+    if (!event.target.classList.contains('GameArea'))
+      return;
+    const newValue = { ...this.state.value };
+    const pos = relativeCoords(event);
+    let key = null;
     if (this.state.currValue === 1) {
-      key = "handles_" + newValue.handles.length
+      key = 'handles_' + newValue.handles.length;
       newValue.handles.push({ x: pos.x * 2, y: pos.y * 2 });
     } else if (this.state.currValue === 2) {
-      key = "platforms_" + newValue.platforms.length
-      newValue.platforms.push({ x: pos.x * 2, y: pos.y * 2, angle: this.state.platform.angle });
+      key = 'platforms_' + newValue.platforms.length;
+      newValue.platforms.push({ x: pos.x * 2, y: pos.y * 2, angle: this.state.platforms.angle });
     } else if (this.state.currValue === 3) {
-      key = "obstacles_" + newValue.obstacles.length
-      newValue.obstacles.push({ x: pos.x * 2, y: pos.y * 2, width: this.state.obstacle.width, height: this.state.obstacle.height, angle: this.state.obstacle.angle });
+      key = 'obstacles_' + newValue.obstacles.length;
+      newValue.obstacles.push({ x: pos.x * 2, y: pos.y * 2, width: this.state.obstacles.width, height: this.state.obstacles.height, angle: this.state.obstacles.angle });
     }
     this.customVcc.change(newValue);
     this.customVcc.save();
     if (key !== null) {
-      window.requestAnimationFrame(() => this.selectItem(document.getElementById(key)))
+      window.requestAnimationFrame(() => this.selectItem(document.getElementById(key)));
     }
   }
 
@@ -358,25 +329,48 @@ class App extends React.PureComponent {
     this.customVcc.save();
   }
 
+  onDrag(_, ui) {
+    const { x, y } = this.selectedObject();
+    const { left, top } = this.state.selected
+  }
+
+  onStop(e, ui) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.selectItem(ui.node.firstChild ? ui.node.firstChild : ui.node);
+    const s = this.selectedObject();
+    const { x, y } = s;
+    this.modifySelectedItem(Object.assign(s, {
+      x: Math.max(0, Math.min(this.state.value.width - 1, x + ui.x * 2)),
+      y: Math.max(0, Math.min(HEIGHT - 1, y + ui.y * 2))
+    }));
+  }
+
+  onStart(_, ui) {
+    // assume hasClass(Item)
+    this.selectItem(ui.node.firstChild ? ui.node.firstChild : ui.node);
+  }
+
   render() {
+    const dragHandlers = { position: { x: 0, y: 0 }, onStart: this.onStart.bind(this), onStop: this.onStop.bind(this) }
     return (
       <Main>
         <Header>
           <Toolbar>
-            {this.state.currValue == 0 ? <PieceActive onClick={() => { this.chooseAsset(0) }}>Select Item</PieceActive> : <Piece onClick={() => { this.chooseAsset(0) }}>Select Item</Piece>}
-            {this.state.currValue == 1 ? <PieceActive onClick={() => { this.chooseAsset(1) }}><Icon src={this.state.icons[1]}></Icon></PieceActive> : <Piece onClick={() => { this.chooseAsset(1) }}><Icon src={this.state.icons[1]}></Icon></Piece>}
-            {this.state.currValue == 2 ? <PieceActive onClick={() => { this.chooseAsset(2) }}><Icon src={this.state.icons[2]}></Icon></PieceActive> : <Piece onClick={() => { this.chooseAsset(2) }}><Icon src={this.state.icons[2]}></Icon></Piece>}
-            {this.state.currValue == 3 ? <PieceActive onClick={() => { this.chooseAsset(3) }}><Icon src={this.state.icons[3]}></Icon></PieceActive> : <Piece onClick={() => { this.chooseAsset(3) }}><Icon src={this.state.icons[3]}></Icon></Piece>}
+            {this.state.currValue == 0 ? <PieceActive onClick={() => { this.chooseAsset(0); }}>Modify & Drag</PieceActive> : <Piece onClick={() => { this.chooseAsset(0); }}>Modify & Drag</Piece>}
+            {this.state.currValue == 1 ? <PieceActive onClick={() => { this.chooseAsset(1); }}><Icon src={this.state.icons[1]}></Icon></PieceActive> : <Piece onClick={() => { this.chooseAsset(1); }}><Icon src={this.state.icons[1]}></Icon></Piece>}
+            {this.state.currValue == 2 ? <PieceActive onClick={() => { this.chooseAsset(2); }}><Icon src={this.state.icons[2]}></Icon></PieceActive> : <Piece onClick={() => { this.chooseAsset(2); }}><Icon src={this.state.icons[2]}></Icon></Piece>}
+            {this.state.currValue == 3 ? <PieceActive onClick={() => { this.chooseAsset(3); }}><Icon src={this.state.icons[3]}></Icon></PieceActive> : <Piece onClick={() => { this.chooseAsset(3); }}><Icon src={this.state.icons[3]}></Icon></Piece>}
           </Toolbar>
           {this.state.show.level && <LevelSettings value={this.state.value.width} onChange={this.setWidth.bind(this)}
             levelHeight={HEIGHT} />}
-          {this.state.show.handle && <HandleSettings x={this.selectedObject().x} y={this.selectedObject().y}
+          {this.state.show.handles && <HandleSettings x={this.selectedObject().x} y={this.selectedObject().y}
             levelWidth={this.state.value.width} levelHeight={HEIGHT}
             onChange={this.modifySelectedItem.bind(this)} onClick={this.deleteSelectedItem.bind(this)} />}
-          {this.state.show.platform && <PlatformSettings x={this.selectedObject().x} y={this.selectedObject().y} angle={this.selectedObject().angle}
+          {this.state.show.platforms && <PlatformSettings x={this.selectedObject().x} y={this.selectedObject().y} angle={this.selectedObject().angle}
             levelWidth={this.state.value.width} levelHeight={HEIGHT}
             onChange={this.modifySelectedItem.bind(this)} onClick={this.deleteSelectedItem.bind(this)} />}
-          {this.state.show.obstacle && <ObstacleSettings x={this.selectedObject().x} y={this.selectedObject().y} width={this.selectedObject().width} height={this.selectedObject().height} angle={this.selectedObject().angle}
+          {this.state.show.obstacles && <ObstacleSettings x={this.selectedObject().x} y={this.selectedObject().y} width={this.selectedObject().width} height={this.selectedObject().height} angle={this.selectedObject().angle}
             levelWidth={this.state.value.width} levelHeight={HEIGHT}
             onChange={this.modifySelectedItem.bind(this)} onClick={this.deleteSelectedItem.bind(this)} />}
         </Header>
@@ -384,19 +378,32 @@ class App extends React.PureComponent {
           theme={this.state.theme}
           onClick={(event) => this.onSettingAsset(event)}
         >
-          {this.state.value.handles.map((handle, i) => (
-            <Handle id={"handles_" + i} key={i} className="Handle Item" style={{ left: (handle.x - 10) / 2, top: (handle.y - 10) / 2, pointerEvents: this.state.currValue==0 ? 'auto' : 'none'}} src={Koji.config.images.handle}></Handle>
+          <Player>P</Player>
+          {this.state.value.handles.map((p, i) => (
+            <Draggable key={i} {...dragHandlers}>
+              <div style={{ display: 'flex', position: 'absolute', left: p.x / 2, top: p.y / 2, pointerEvents: 'none' }} >
+                <Handle id={'handles_' + i} className="Handle Item"
+                  style={{ transform: 'translate(-50%, -50%)', pointerEvents: this.state.currValue == 0 ? 'auto' : 'none' }} src={Koji.config.images.handle}></Handle>
+              </div>
+            </Draggable>
           ))}
           {this.state.value.platforms.map((p, i) => (
-            <Platform id={"platforms_" + i} key={i} className="Platform Item"
-            style={{ left: (p.x - 28) / 2, top: (p.y - 5) / 2, transform: 'rotate('+p.angle+'deg)', pointerEvents: this.state.currValue==0 ? 'auto' : 'none'}} src={Koji.config.images.platform}></Platform>
+            <Draggable key={i} {...dragHandlers}>
+              <div style={{ display: 'flex', position: 'absolute', left: p.x / 2, top: p.y / 2, pointerEvents: 'none' }} >
+                <Platform id={'platforms_' + i} className="Platform Item"
+                  style={{ position: 'relative', transform: 'translate(-50%, -50%) rotate(' + p.angle + 'deg)', pointerEvents: this.state.currValue == 0 ? 'auto' : 'none' }} src={Koji.config.images.platform}></Platform>
+              </div>
+            </Draggable>
           ))}
           {this.state.value.obstacles.map((p, i) => (
-            <Obstacle id={"obstacles_" + i} key={i} className="Obstacle Item"
-            style={{ left: (p.x - p.width/2) / 2, top: (p.y - p.height/2) / 2, width: p.width/2, height: p.height/2, borderRadius: p.height/2, transform: 'rotate('+p.angle+'deg)', pointerEvents: this.state.currValue==0 ? 'auto' : 'none'}} src={Koji.config.images.platform}></Obstacle>
+            <Draggable key={i} {...dragHandlers}>
+              <div style={{ display: 'flex', position: 'absolute', left: p.x / 2, top: p.y / 2, pointerEvents: 'none' }} >
+                <Obstacle id={'obstacles_' + i} className="Obstacle Item"
+                  style={{ width: p.width / 2, height: p.height / 2, borderRadius: p.height / 2, transform: 'translate(-50%, -50%) rotate(' + p.angle + 'deg)', pointerEvents: this.state.currValue == 0 ? 'auto' : 'none' }} src={Koji.config.images.platform}></Obstacle>
+              </div>
+            </Draggable>
           ))}
-          <Player>P</Player>
-          <Highlight style={Object.assign({'pointerEvents': 'none', 'visible': this.state.selected.item===null ? 'false' : 'true'}, this.state.selected)}></Highlight>
+          <Highlight style={Object.assign({ 'pointerEvents': 'none', 'visible': this.state.selected.item === null ? 'false' : 'true' }, this.state.selected)}></Highlight>
         </GameArea>
         <Finish width={this.state.value.width / 2}></Finish>
       </Main>

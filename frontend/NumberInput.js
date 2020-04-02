@@ -1,11 +1,9 @@
 import styled from 'styled-components';
 
 const Input = styled.input.attrs(props => ({
-  // we can define static props
   type: "number",
   min: props.min || 0,
   max: props.max || null,
-  // or we can define dynamic ones
   size: props.size || "0.5em",
 }))`
   color: #3;
