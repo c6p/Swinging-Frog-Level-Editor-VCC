@@ -94,7 +94,7 @@ const Header = styled.div`
     border-radius: 0px 0px 6px 6px;
     top: 0px;
     z-index: 999;
-    position: absolute;
+    position: fixed;
     width: 100%;
 `;
 
