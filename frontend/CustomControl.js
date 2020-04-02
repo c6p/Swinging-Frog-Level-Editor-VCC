@@ -40,7 +40,8 @@ const Finish = styled.div`
   top: ${TOP}px;
   width: 10px;
   height: 540px;
-  background-image: linear-gradient(45deg, #333 25%, #fff), linear-gradient(-45deg, #333 25%, #fff), linear-gradient(45deg, #fff 75%, #333 75%), linear-gradient(-45deg, #fff 75%, #333 75%);
+  background-color: white;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 2'%3E%3Cpath fill='rgb(0,0,0)' fill-rule='evenodd' d='M0 0h1v1H0V0zm1 1h1v1H1V1z'/%3E%3C/svg%3E");
   background-size: 10px 10px;
   background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
 `;
