@@ -15,6 +15,8 @@ const Items = { LEVEL: 0, HANDLE: 1, PLATFORM: 2, OBSTACLE: 3 };
 
 const KEY_DELETE = 46;
 
+function scrollLeft() { return document.documentElement.scrollLeft || document.body.scrollLeft }
+function scrollTop() { return document.documentElement.scrollTop || document.body.scrollTop }
 
 const Main = styled.div`
     padding: 0;
@@ -238,8 +240,8 @@ class App extends React.PureComponent {
     if (mKey !== null)
       this.setState(prevState => ({ [key]: { ...prevState[key], [mKey]: value[mKey] } }));
     window.requestAnimationFrame(() => {
-      let { left, top, width, height } = s.getBoundingClientRect();
-      this.setState({ selected: { left: left - LEFT, top: top - TOP, width, height, item: s } });
+      const { left, top, width, height } = s.getBoundingClientRect();
+      this.setState({ selected: { left: left + scrollLeft() - LEFT, top: top + scrollTop() - TOP, width, height, item: s } });
     });
   }
 
@@ -284,7 +286,7 @@ class App extends React.PureComponent {
         type = Items.OBSTACLE;
     }
     const { left, top, width, height } = rect;
-    this.setState({ selected: { left: left - LEFT, top: top - TOP, width, height, item } });
+    this.setState({ selected: { left: left + scrollLeft() - LEFT, top: top + scrollTop() - TOP, width, height, item } });
     this.showDialog(type);
   }
 
@@ -375,16 +377,17 @@ class App extends React.PureComponent {
             levelWidth={this.state.value.width} levelHeight={HEIGHT}
             onChange={this.modifySelectedItem.bind(this)} onClick={this.deleteSelectedItem.bind(this)} />}
         </Header>
+        <Finish width={this.state.value.width / 2}></Finish>
         <GameArea className="GameArea" width={this.state.value.width / 2}
           theme={this.state.theme}
           onClick={(event) => this.onSettingAsset(event)}
         >
           <Player>P</Player>
-          {this.state.value.handles.map((p, i) => (
+          {this.state.value.obstacles.map((p, i) => (
             <Draggable key={i} {...dragHandlers}>
               <div style={{ display: 'flex', position: 'absolute', left: p.x / 2, top: p.y / 2, pointerEvents: 'none' }} >
-                <Handle id={'handles_' + i} className="Handle Item"
-                  style={{ transform: 'translate(-50%, -50%)', pointerEvents: this.state.currValue == 0 ? 'auto' : 'none' }} src={Koji.config.images.handle}></Handle>
+                <Obstacle id={'obstacles_' + i} className="Obstacle Item"
+                  style={{ width: p.width / 2, height: p.height / 2, borderRadius: p.height / 2, transform: 'translate(-50%, -50%) rotate(' + p.angle + 'deg)', pointerEvents: this.state.currValue == 0 ? 'auto' : 'none' }} src={Koji.config.images.platform}></Obstacle>
               </div>
             </Draggable>
           ))}
@@ -396,17 +399,16 @@ class App extends React.PureComponent {
               </div>
             </Draggable>
           ))}
-          {this.state.value.obstacles.map((p, i) => (
+          {this.state.value.handles.map((p, i) => (
             <Draggable key={i} {...dragHandlers}>
               <div style={{ display: 'flex', position: 'absolute', left: p.x / 2, top: p.y / 2, pointerEvents: 'none' }} >
-                <Obstacle id={'obstacles_' + i} className="Obstacle Item"
-                  style={{ width: p.width / 2, height: p.height / 2, borderRadius: p.height / 2, transform: 'translate(-50%, -50%) rotate(' + p.angle + 'deg)', pointerEvents: this.state.currValue == 0 ? 'auto' : 'none' }} src={Koji.config.images.platform}></Obstacle>
+                <Handle id={'handles_' + i} className="Handle Item"
+                  style={{ transform: 'translate(-50%, -50%)', pointerEvents: this.state.currValue == 0 ? 'auto' : 'none' }} src={Koji.config.images.handle}></Handle>
               </div>
             </Draggable>
           ))}
           <Highlight style={Object.assign({ 'pointerEvents': 'none', 'visible': this.state.selected.item === null ? 'false' : 'true' }, this.state.selected)}></Highlight>
         </GameArea>
-        <Finish width={this.state.value.width / 2}></Finish>
       </Main>
     );
   }
