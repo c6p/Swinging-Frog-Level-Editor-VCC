@@ -40,7 +40,7 @@ const Finish = styled.div`
   top: ${TOP}px;
   width: 10px;
   height: 540px;
-  background-image: linear-gradient(45deg, #333 25%, transparent 25%), linear-gradient(-45deg, #333 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #333 75%), linear-gradient(-45deg, transparent 75%, #333 75%);
+  background-image: linear-gradient(45deg, #333 25%, #fff), linear-gradient(-45deg, #333 25%, #fff), linear-gradient(45deg, #fff 75%, #333 75%), linear-gradient(-45deg, #fff 75%, #333 75%);
   background-size: 10px 10px;
   background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
 `;
