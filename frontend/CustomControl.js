@@ -226,7 +226,10 @@ class App extends React.PureComponent {
   deleteSelectedItem() {
     const s = this.state.selected.item;
     let [key, index] = s.id.split('_');
-    this.state.value[key].splice(index, 1);
+    const newValue = { ...this.state.value };
+    newValue[key].splice(index, 1);
+    this.customVcc.change(newValue);
+    this.customVcc.save();
     this.selectItem();
   }
 
